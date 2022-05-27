@@ -1,6 +1,6 @@
 # Oxidized Text Adventure
 
-A basic text adventure built using rust
+A text adventure game engine built using rust.
 
 ## TODO: 
 
