@@ -50,7 +50,7 @@ impl Player {
                 name: name,
                 health: 100,
                 armor: 0,
-                pos: (50, 25),
+                pos: (164, 40),
                 facing: 0,
                 inventory: vec!(Item::new("Compass", "Always points the way home").unwrap(), Item::new("Map", "The World Map").unwrap()),
                 world: world
@@ -70,7 +70,7 @@ impl Player {
             0 => { // North
                 if self.pos.1 < 100 {
                     self.pos.1 -= 1;
-                    self.world.discover(self.pos.0.try_into().unwrap(), self.pos.1.try_into().unwrap());
+                    self.world.discover(self.pos.0.try_into().unwrap(), self.pos.1.try_into().unwrap(), true);
                     return Ok(());
                 }
                 return Err(PlayerError::OutOfBounds);
@@ -78,7 +78,7 @@ impl Player {
             1 => { // East
                 if self.pos.0 < 100 {
                     self.pos.0 += 1;
-                    self.world.discover(self.pos.0.try_into().unwrap(), self.pos.1.try_into().unwrap());
+                    self.world.discover(self.pos.0.try_into().unwrap(), self.pos.1.try_into().unwrap(), true);
                     return Ok(());
                 }
                 return Err(PlayerError::OutOfBounds);
@@ -87,7 +87,7 @@ impl Player {
                 if self.pos.1 > 0 {
                     if self.world.is_accessible(self.pos.0.try_into().unwrap(), (self.pos.1 + 1 ).try_into().unwrap()) {
                         self.pos.1 += 1;
-                        self.world.discover(self.pos.0.try_into().unwrap(), self.pos.1.try_into().unwrap());
+                        self.world.discover(self.pos.0.try_into().unwrap(), self.pos.1.try_into().unwrap(), true);
                         return Ok(());
                     }
                     return Err(PlayerError::OutOfBounds);
@@ -97,7 +97,7 @@ impl Player {
             3 => { // West
                 if self.pos.0 > 0 {
                     self.pos.0 -= 1;
-                    self.world.discover(self.pos.0.try_into().unwrap(), self.pos.1.try_into().unwrap());
+                    self.world.discover(self.pos.0.try_into().unwrap(), self.pos.1.try_into().unwrap(), true);
                     return Ok(());
                 }
                 return Err(PlayerError::OutOfBounds);
@@ -166,7 +166,7 @@ impl Player {
     
         match base_cmd {
             "help" => {
-                println!("Avalible commands:\nmove <direction>\ninventory\nstatus");
+                println!("Avalible commands:\nmove <forward/backward/left/right>\ninventory\nstatus");
                 Ok(())
             },
             "inventory" => {
@@ -219,7 +219,6 @@ impl Player {
                         && direction != "back"
                         && direction != "left"
                         && direction != "right" {
-                    
                     return Err(PlayerError::InvalidMovement);
                 }
                 match self.rotate(direction) {
@@ -227,19 +226,19 @@ impl Player {
                     Ok(_) => {
                         match self.facing {
                             0 => {
-                                self.world.discover(self.pos.0.try_into().unwrap(), (self.pos.1 - 1).try_into().unwrap());
+                                self.world.display_tile(self.pos.0.try_into().unwrap(), (self.pos.1 - 1).try_into().unwrap());
                                 return Ok(());
                             },
                             1 => {
-                                self.world.discover((self.pos.0 - 1).try_into().unwrap(), (self.pos.1).try_into().unwrap());
+                                self.world.display_tile((self.pos.0 - 1).try_into().unwrap(), (self.pos.1).try_into().unwrap());
                                 return Ok(());
                             },
                             2 => {
-                                self.world.discover(self.pos.0.try_into().unwrap(), (self.pos.1 + 1).try_into().unwrap());
+                                self.world.display_tile(self.pos.0.try_into().unwrap(), (self.pos.1 + 1).try_into().unwrap());
                                 return Ok(());
                             },
                             3 => {
-                                self.world.discover((self.pos.0 + 1).try_into().unwrap(), (self.pos.1).try_into().unwrap());
+                                self.world.display_tile((self.pos.0 + 1).try_into().unwrap(), (self.pos.1).try_into().unwrap());
                                 return Ok(());
                             },
                             _ => {

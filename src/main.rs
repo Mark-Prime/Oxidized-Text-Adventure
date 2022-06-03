@@ -27,11 +27,11 @@ fn main() {
         Err(_) => panic!("AAAA")
     };
 
+    cls();
+
     let (x, y) = player.get_pos();
 
-    player.world.discover(x as usize, y as usize);
-
-    cls();
+    player.world.discover(x as usize, y as usize, true);
     loop {
         let mut cmd = String::new();
         stdin().read_line(&mut cmd).expect("Invalid Command");
