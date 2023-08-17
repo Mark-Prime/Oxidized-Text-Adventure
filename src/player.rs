@@ -33,6 +33,7 @@ impl Display for PlayerError {
     }
 }
 
+#[derive(Debug)]
 pub struct Player {
     name: String,
     health: u8,

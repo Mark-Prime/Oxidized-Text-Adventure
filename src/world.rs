@@ -1,12 +1,13 @@
-use std::io::{stdout};
+use std::io::stdout;
 use image::{io::Reader as ImageReader, Pixel};
 use std::fmt::{self, Display, Formatter};
 use crossterm::{
     execute,
-    cursor::{MoveTo},
+    cursor::MoveTo,
     terminal::{Clear, ClearType},
 };
 
+#[derive(Debug)]
 pub struct World {
     tiles: Box<[Box<[Tile]>]>,
     max_x: u8,
@@ -201,7 +202,7 @@ impl Default for World {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 enum TileName {
     Ocean,
     Water,
@@ -235,7 +236,7 @@ impl Display for TileName {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct Tile {
     name: TileName,
     accessible: bool,
@@ -336,7 +337,7 @@ impl Default for Tile {
     }
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Debug)]
 enum TownSize {
     Capital,
     City,
@@ -344,14 +345,14 @@ enum TownSize {
     Hut,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct Town {
     name: String,
     size: TownSize,
     quests: Vec<Quest>,
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 struct Quest {
     name: String,
     unlocked: bool,

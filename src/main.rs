@@ -9,6 +9,7 @@ use crossterm::{
 mod player;
 mod item;
 mod world;
+mod gamestate;
 
 fn cls() {
     execute!(stdout(), Clear(ClearType::All), cursor::MoveTo(0,0)).unwrap();
@@ -16,6 +17,7 @@ fn cls() {
 
 fn main() {
     cls();
+    let gs = gamestate::GameState::new();
     let world = world::World::new("./src/img/text-map.png".to_string());
     println!("Input your name:");
 

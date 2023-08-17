@@ -17,6 +17,7 @@ impl Display for ItemError {
     }
 }
 
+#[derive(Debug)]
 pub struct Item {
     pub name: String,
     description: String,
